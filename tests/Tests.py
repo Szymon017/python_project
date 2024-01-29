@@ -76,7 +76,24 @@ class Tests(TestCase):
         result = order_.count_order_with_discount()
         self.assertEqual(result, 1224)
 
+    def test_if_there_is_no_product_in_inventory(self):
+        drums = Drums("Drum_01", 2000, "simple drums")
+        cart = Cart()
+        cart.add_product(drums, 1)
+        order = Order()
+        order.add_cart(cart)
+        self.mock_inventory.get_product_mock.return_value = 0
+        handle_order = order.handle_cart_test(self.mock_inventory)
 
+        self.assertEqual(order.count_items(), 1)
+        self.assertIsNone(handle_order)
+
+        if handle_order:
+            print("Zamówienie zostało zrealizowane")
+            print("Szczegóły:")
+            print(order.display_order())
+        else:
+            print("Zamówienie nie zostało zrealizowane ze względu na brak produktów w magazynie")
 
 if __name__ == '__main__':
     unittest.main()

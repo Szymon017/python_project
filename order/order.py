@@ -52,4 +52,12 @@ class Order:
             return discounted_price
         return total_order_price
 
+    def count_items(self):
+        items = 0
+        for cart in self.queue:
+            for product, quantity in cart.cart_items:
+                items += quantity
+
+        return items
+
 
